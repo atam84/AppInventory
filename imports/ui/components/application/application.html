@@ -1,0 +1,19 @@
+<template name="application">
+    {{#autoForm schema=application_schema id="applicationForm" type="method" meteormethod="sendEmail"}}
+    <fieldset>
+      <legend>Add new application</legend>
+      {{> afQuickField name="name"}}
+      {{> afQuickField name="ressources"}}
+      {{> afQuickField name="responsible"}}
+      {{> afQuickField name="technologie"}}
+      {{> afQuickField name="project"}}
+      {{> afQuickField name="description"}}
+      {{> afQuickField name="endoflife"}}
+      {{> afQuickField name="comment" rows=10}}
+      <div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="reset" class="btn btn-default">Reset</button>
+      </div>
+    </fieldset>
+    {{/autoForm}}
+</template>

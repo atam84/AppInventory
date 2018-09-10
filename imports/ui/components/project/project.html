@@ -1,0 +1,109 @@
+<template name='projects'>
+    <div class="button-band">
+    {{> inModal label="@create project" class="btn-primary btn-sm project-modal"}}
+    {{> inModal label="@create project" isLink="true" class="alert-link project-modal"}}
+    </div>
+    <button type="button" class="btn btn-primary btn-sm project-modal openInModal" data-toggle="modal" data-target="#inModal" data-whatever="@mdo">main open</button>
+    <table class="table table-bordered table-hover table-sm">
+        <thead>
+            <tr>
+                <th>Project</th>
+                <th>ID</th>
+                <th>Code</th>
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each item in projectCollection}}
+            <tr id="{{item._id}}">
+                <td><a href="/projects/{{item._id}}">{{item.project}}</a></td>
+                <td>{{item.projectId}}</td>
+                <td>{{item.projectCode}}</td>
+                <td class="text-center">
+                    <a class='btn btn-info btn-sm' href="#">
+                    <span class="glyphicon glyphicon-edit"></span> Edit</a> 
+                    <a href="#" class="btn btn-danger btn-sm btn-remove" id={{item._id}}><span class="glyphicon glyphicon-remove"></span> Del</a>
+                    <a class="btn btn-primary btn-sm" data-toggle="collapse" href="#prj{{item._id}}" role="button" aria-expanded="false" aria-controls="{{item._id}}">
+                        details</a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" class="collapse" id="prj{{item._id}}">
+                    <div>
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                    </div>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</template>
+
+<template name='insertProject'>
+    {{#autoForm collection=projectCollection id="insertProject" type="insert"}}
+
+                <div class="row">
+                    <div class="col">
+                        {{> afQuickField name='project' autofocus=''}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        {{> afQuickField name='projectId'}}
+                    </div>
+                    <div class="col">
+                        {{> afQuickField name='projectCode'}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        {{> afQuickField name='info.startDate'}}
+                    </div>
+                    <div class="col">
+                        {{> afQuickField name='info.endDate'}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        {{> afQuickField name='tags'}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        {{> afQuickField name='description'}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        {{> afQuickField name='comment' rows=4}}
+                    </div>
+                </div>
+                <div class="modal-footer" style="padding: 1rem 0rem 0rem 0rem;">
+                    <button type="reset" class="btn btn-secondary close-modal" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Create</button>
+                </div>
+
+    {{/autoForm}}
+</template>
+
+
+<template name="updateProject">
+
+</template>
+
+
+<template name="viewProjects">
+    <fieldset>
+      <legend>Projects</legend>
+    </fieldset>
+</template>
+
+
+<template name="detailsProject">
+    <fieldset>
+      <legend>Project details</legend>
+    </fieldset>
+</template>
+

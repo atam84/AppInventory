@@ -1,0 +1,95 @@
+<template name='ressources'>
+    <div>
+    {{> inModal label="@create ressource" class="btn-primary btn-sm ressource-modal"}}
+    {{> inModal label="@create ressource" isLink="true" class="alert-link  ressource-modal"}}
+    </div>
+    <table class="table table-bordered table-hover table-sm">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each item in ressourceCollection}}
+            <tr id="{{item._id}}">
+                <td><a href="/ressources/{{item._id}}">{{item._id}}</a></td>
+                <td>{{item.firstName}}</td>
+                <td>{{item.lastName}}</td>
+                <td class="text-center">
+                    <a class='btn btn-info btn-sm' href="#">
+                    <span class="glyphicon glyphicon-edit"></span> Edit</a> 
+                    <a href="#" class="btn btn-danger btn-sm btn-remove" id={{item._id}}><span class="glyphicon glyphicon-remove"></span> Del</a>
+                    <a class="btn btn-primary btn-sm" data-toggle="collapse" href="#res{{item._id}}" role="button" aria-expanded="false" aria-controls="{{item._id}}">
+                        datails</a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" class="collapse" id="res{{item._id}}">
+                    <div>
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                    </div>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</template>
+
+
+
+<template name='insertRessource'>
+    {{#autoForm collection=ressourceCollection id="insertRessource" type="insert"}}
+    <div class="modal-body">
+        <fieldset>
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        {{> afQuickField name='firstName' autofocus=''}}
+                    </div>
+                    <div class="col">
+                        {{> afQuickField name='lastName'}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        {{> afQuickField name='email'}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        {{> afQuickField name='localization'}}
+                    </div>
+                    <div class="col">
+                        {{> afQuickField name='job'}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        {{> afQuickField name='comment' rows=3}}
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="modal-footer">
+        <button type="reset" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success">Create</button>
+    </div>
+    {{/autoForm}}
+</template>
+
+
+<template name="updateRessource">
+
+</template>
+
+<template name="detailsRessource">
+    <fieldset>
+      <legend>ressource details</legend>
+    </fieldset>
+</template>
+    
+    

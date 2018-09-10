@@ -1,0 +1,14 @@
+<template name="technology">
+        {{#autoForm schema=technology_schema id="technology" type="method" meteormethod="sendEmail"}}
+        <fieldset>
+          <legend>Add new technology</legend>
+          {{> afQuickField name="name"}}
+          {{> afQuickField name="short_name"}}
+          {{> afQuickField name="comment" rows=10}}
+          <div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="reset" class="btn btn-default">Reset</button>
+          </div>
+        </fieldset>
+        {{/autoForm}}
+</template>
