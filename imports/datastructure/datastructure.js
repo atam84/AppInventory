@@ -18,6 +18,15 @@ import { application } from './application.js';
 import { localization } from './localization.js';
 import { server } from './server.js';
 
+
+SimpleSchema.setDefaultMessages({
+	messages: {
+		en: {
+			errDuplicate: "Duplicate unique field detected.",
+		},
+	},
+});
+
 export const dataStructure = {
 	project: project,
 	ressource: ressource,

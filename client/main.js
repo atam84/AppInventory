@@ -21,7 +21,16 @@ import './main.scss';
 //import './main.html';
 
 
-
+collections.envs.before.insert((userId, doc) => {
+    console.log('env vérification server side.');
+    console.dir(userId);
+    console.log('-------');
+    console.dir(doc);
+    console.log('-------');
+    console.dir(this);
+    console.log('-------');
+    console.dir(this.transform);
+});
 
 
 

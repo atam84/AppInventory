@@ -1,9 +1,6 @@
 //import { Tracker } from 'meteor/tracker';
 //import { Mongo } from 'meteor/mongo';
-import { Tabular } from "meteor/aldeed:tabular";
-import { $ } from 'meteor/jquery';
 import { collections } from '../../../datastructure/datastructure.js';
-import { ReactiveVar } from 'meteor/reactive-var';
 import { Template } from 'meteor/templating';
 import SimpleSchema from 'simpl-schema';
 import '../../modal/modal.js';

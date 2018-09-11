@@ -66,23 +66,24 @@ AutoForm.addHooks(null, {
     },
     onSuccess: (formType, result) => {
         Session.set('inModalOnResult', {
-            label: 'Success !',
-            message: 'Added successfuly',
+            label: formType + ' success.',
+            message: result,
             class: 'alert alert-success alert-dismissible fade',
             action: 'show',
             type: 'success'
         });
-        console.log('insert success : ' + result);
+        console.log(formType + ' success : ' + result);
     },
     onError: (formType, result) => {
         Session.set('inModalOnResult', {
-            label: 'Error !',
-            message: 'Can\'t added document',
+            label: formType + ' error !',
+            message: result.message,
             class: 'alert alert-danger alert-dismissible fade',
             action: 'show',
             type: 'error'
         });
-        console.log('insert error : ' + result);
+        console.log(formType + ' error : ');
+        console.dir(result);
     }
 });
 
