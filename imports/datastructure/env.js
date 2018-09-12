@@ -11,79 +11,54 @@ export const env = new SimpleSchema({
 		type: String,
 		label: "Name",
 		max: 50,
+		custom() {
+			console.dir(this.field('name'));
+			console.dir(this.field('short_name'));
+	
+			if(!this.field('name').value && !this.value) {
+				return 'required';
+			}
+			// verification server side
+			if(Meteor.isServer) {
+				let targetCheck = collections.envs.find({name: this.field('name').value}).fetch();
+				if (targetCheck.lenght > 0) {
+					if (this.isInsert) {
+						return 'errDuplicate';
+					}
+					if (this.isUpdate) {
+						if (targetCheck.lenght == 1) {
+							return undefined;
+						} else {
+							return 'errDuplicate';
+						}
+					}
+				} else {
+					return undefined;
+				}
+			}
+		}
 	},
 	short_name: {
 		type: String,
 		label: "Short name",
 		max: 5,
 	},
+	set_color: {
+		type: String,
+		label: "Define background color",
+		required: false,
+	},
 	comment: {
 		type: String,
 		label: "Comment",
 		max: 255
 	},
-	/*custom() {
-		console.dir(this.field('name'));
-		console.dir(this.field('short_name'));
-
-		if(!this.field('name').value && !this.value) {
-			return 'required';
-		}
-		// verification server side
-		if(Meteor.isServer) {
-			let targetCheck = collections.envs.findOne({name: this.field('name').value})
-			if (this.isInsert) {
-				if(targetCheck !== undefined) {
-					console.log(this._id + ' => value ' + this.value + ' existe !!!');
-					return 'errDuplicate';
-				} else {
-					return undefined;
-				}
-			}
-			if (this.isUpdate) {
-				if (targetCheck !== this._id) {
-					console.log(this._id + ' => value ' + this.value + ' existe !!!');
-					console.log('Attempt to modify existing document by existing unique field');
-					return 'errDuplicate';
-				} else {
-					return undefined;
-				}
-			}
-		}
-	}*/
+	info: {
+		type: Object,
+		required: false,
+		blackbox: true
+	},
 }, { tracker: Tracker });
-
-env.addValidator(() => {
-	console.dir(this.field('name'));
-	console.dir(this.field('short_name'));
-
-	if(!this.field('name').value && !this.value) {
-		return 'required';
-	}
-	// verification server side
-	if(Meteor.isServer) {
-		let targetCheck = collections.envs.findOne({name: this.field('name').value})
-		if (this.isInsert) {
-			if(targetCheck !== undefined) {
-				console.log(this._id + ' => value ' + this.value + ' existe !!!');
-				return 'errDuplicate';
-			} else {
-				return undefined;
-			}
-		}
-		if (this.isUpdate) {
-			if (targetCheck !== this._id) {
-				console.log(this._id + ' => value ' + this.value + ' existe !!!');
-				console.log('Attempt to modify existing document by existing unique field');
-				return 'errDuplicate';
-			} else {
-				return undefined;
-			}
-		}
-	}
-});
-
-//
 
 
 

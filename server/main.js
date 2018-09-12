@@ -18,5 +18,14 @@ Meteor.methods({
 
 
 collections.envs.before.insert((userId, doc) => {
-    doc.createdAt = Date.now();
+    doc.info = {
+        creation : {
+            createdAt : Date.now(),
+            createBy : userId
+        },
+        modification : {
+            createdAt : Date.now(),
+            createBy : userId
+        }
+    };
 });
