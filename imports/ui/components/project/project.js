@@ -27,7 +27,6 @@ Template.updateProject.helpers({
     }
 });
 
-/*
 Template.detailsProject.helpers({
     'selectedDocument': () => {
         return getDocumentById(_collection, FlowRouter.getParam('_id'));
@@ -44,7 +43,7 @@ Template.detailsProject.events({
         setSelectedDocument(e.target.id);
     },
 });
-*/
+
 
 Template.Projects.helpers({
     'projectCollection': () => {
