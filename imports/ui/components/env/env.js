@@ -1,10 +1,10 @@
-//import { Tracker } from 'meteor/tracker';
-//import { Mongo } from 'meteor/mongo';
 import { collections } from '../../../datastructure/datastructure.js';
 import { Template } from 'meteor/templating';
 import SimpleSchema from 'simpl-schema';
 import '../../modal/modal.js';
 import './env.html';
+import { setInModalTemplate, loadDocuments, removeDocument, resetSelectedDocument, resetInModalTemplate, setSelectedDocument, getDocumentById } from '../../../api/client/actions.js';
+
 
 let _collection = collections.envs;
 
@@ -22,8 +22,8 @@ Template.updateEnv.helpers({
         return _collection;
     },
     'selectedDocument': () => {
-        return getDocumentById(_collection, getSelectedDocumentId());
-        //return _collection.findOne({_id: Session.get('selectedDocument')._id});
+        //return getDocumentById(_collection, getSelectedDocumentId());
+        return _collection.findOne({_id: Session.get('selectedDocument')._id});
     }
 });
 
@@ -75,7 +75,7 @@ Template.Envs.events({
     }
 });
 
-
+/*
 const loadDocuments = (MongoCollection) => {
     return MongoCollection.find({}).fetch();
 }
@@ -118,4 +118,5 @@ const setInModalTemplate = (settings) => {
 const getDocumentById = (MongoCollection, docId) => {
     return MongoCollection.findOne({_id: docId});
 }
+*/
 

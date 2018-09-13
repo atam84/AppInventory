@@ -1,4 +1,150 @@
-<template name='projects'>
+<template name='Projects'>
+    <div class="button-band">
+        <button type="button" class="btn btn-primary btn-sm project-modal openInModal" data-toggle="modal" data-target="#inModal"> Create new</button>
+        {{> inModal label="@create project" class="btn-primary btn-sm project-modal"}}
+        {{> inModal label="@create project" isLink="true" class="alert-link project-modal"}}
+    </div>
+    <table class="table table-bordered table-hover table-sm">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Project</th>
+                <th>Code</th>
+                <th>Owner</th>
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each item in projectCollection}}
+            <tr id="{{item._id}}">
+                <td><a href="/projects/{{item._id}}">{{item.project}}</a></td>
+                <td>{{item.projectId}}</td>
+                <td>{{item.projectCode}}</td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-primary btn-sm mod-project-modal openInModal" data-toggle="modal" data-target="#inModal" id="{{item._id}}">Edit Project</button>
+                    <a class="btn btn-primary btn-sm" href="/project/detail/{{item._id}}" role="button" id="{{item._id}}">details</a>
+                    <a href="#" class="btn btn-danger btn-sm btn-remove" id={{item._id}}><span class="glyphicon glyphicon-remove"></span>Del</a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</template>
+
+
+<!-- template name='insertEnv'>
+    <- {{> Env id="insertEnv" type="insert"}} ->
+    {{#autoForm collection=envCollection id='insertEnv' type='insert'}}
+    <div class="row">
+        <div class="col">
+            {{> afQuickField name='name' autofocus=''}}
+        </div>
+        <div class="col">
+            {{> afQuickField name='short_name'}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col" style="margin-bottom: 1rem;">
+            {{> afFieldInput name='set_color' type='color'}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            {{> afQuickField name='comment' rows=3}}
+        </div>
+    </div>
+    <div class="modal-footer" style="padding: 1rem 0rem 0rem 0rem;">
+        <button type="reset" class="btn btn-secondary close-modal" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success">Create</button>
+    </div>
+    {{/autoForm}}
+</template>
+-->
+
+<template name="updateProject">
+    {{#autoForm collection=projectCollection doc=selectedDocument id='updateProject' type='update'}}
+    <div class="row">
+        <div class="col">
+            {{> afQuickField name='project' autofocus=''}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            {{> afQuickField name='projectId'}}
+        </div>
+        <div class="col">
+            {{> afQuickField name='projectCode'}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            {{> afQuickField name='info.startDate'}}
+        </div>
+        <div class="col">
+            {{> afQuickField name='info.endDate'}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            {{> afQuickField name='tags'}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            {{> afQuickField name='description'}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            {{> afQuickField name='comment' rows=4}}
+        </div>
+    </div>
+    <div class="modal-footer" style="padding: 1rem 0rem 0rem 0rem;">
+        <button type="reset" class="btn btn-secondary close-modal" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success">Create</button>
+    </div>
+    {{/autoForm}}
+</template>
+
+
+<!-- template name="detailsEnv">
+    {{#with selectedDocument}}
+    <div class="card">
+        <div class="card-header">
+            <h5>Environnement</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <h5 class="card-title">Project name: {{name}}</h5>
+                </div>
+                <div class="col">
+                    <h5>Code: {{short_name}}</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <h5>Comment: </h5>
+                    <div style="border-style: solid; border-width: 0px 0px 0px 6px; border-radius: 5px; padding: 1rem; margin: 1rem; border-color: {{set_color}}; background-color: #f7f7f7;">
+                        <pre style="font-size: 1rem;">{{comment}}</pre>
+                    </div>
+
+                </div>
+            </div>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <button type="button" class="btn btn-primary btn-sm mod-project-modal openInModal" data-toggle="modal" data-target="#inModal" id="{{_id}}">Edit Env</button>
+            <div class="button-band">
+                    {{> inModal label="@create env" class="btn btn-primary btn-sm mod-project-modal openInModal"}}
+            </div>
+        </div>
+    </div>
+    {{/with}}
+    {{inModal}}
+</template>
+
+-->
+
+<!-- template name='projects'>
     <div class="button-band">
     {{> inModal label="@create project" class="btn-primary btn-sm project-modal"}}
     {{> inModal label="@create project" isLink="true" class="alert-link project-modal"}}
@@ -37,73 +183,50 @@
             {{/each}}
         </tbody>
     </table>
-</template>
+</template -->
 
 <template name='insertProject'>
     {{#autoForm collection=projectCollection id="insertProject" type="insert"}}
-
-                <div class="row">
-                    <div class="col">
-                        {{> afQuickField name='project' autofocus=''}}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        {{> afQuickField name='projectId'}}
-                    </div>
-                    <div class="col">
-                        {{> afQuickField name='projectCode'}}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        {{> afQuickField name='info.startDate'}}
-                    </div>
-                    <div class="col">
-                        {{> afQuickField name='info.endDate'}}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        {{> afQuickField name='tags'}}
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col">
-                        {{> afQuickField name='description'}}
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col">
-                        {{> afQuickField name='comment' rows=4}}
-                    </div>
-                </div>
-                <div class="modal-footer" style="padding: 1rem 0rem 0rem 0rem;">
-                    <button type="reset" class="btn btn-secondary close-modal" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success">Create</button>
-                </div>
-
+    <div class="row">
+        <div class="col">
+            {{> afQuickField name='project' autofocus=''}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            {{> afQuickField name='projectId'}}
+        </div>
+        <div class="col">
+            {{> afQuickField name='projectCode'}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            {{> afQuickField name='info.startDate'}}
+        </div>
+        <div class="col">
+            {{> afQuickField name='info.endDate'}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            {{> afQuickField name='tags'}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            {{> afQuickField name='description'}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            {{> afQuickField name='comment' rows=4}}
+        </div>
+    </div>
+    <div class="modal-footer" style="padding: 1rem 0rem 0rem 0rem;">
+        <button type="reset" class="btn btn-secondary close-modal" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success">Create</button>
+    </div>
     {{/autoForm}}
-</template>
-
-
-<template name="updateProject">
-
-</template>
-
-
-<template name="viewProjects">
-    <fieldset>
-      <legend>Projects</legend>
-    </fieldset>
-</template>
-
-
-<template name="detailsProject">
-    <fieldset>
-      <legend>Project details</legend>
-    </fieldset>
 </template>
 

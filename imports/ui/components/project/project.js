@@ -1,9 +1,88 @@
-//import { Tracker } from 'meteor/tracker';
-//import { Mongo } from 'meteor/mongo';
-import { Tabular } from "meteor/aldeed:tabular";
-import { $ } from 'meteor/jquery';
 import { collections } from '../../../datastructure/datastructure.js';
-import { ReactiveVar } from 'meteor/reactive-var';
+import { Template } from 'meteor/templating';
+import SimpleSchema from 'simpl-schema';
+import '../../modal/modal.js';
+import './project.html';
+import { setInModalTemplate, loadDocuments, removeDocument, resetSelectedDocument, resetInModalTemplate, setSelectedDocument, getDocumentById } from '../../../api/client/actions.js';
+
+
+let _collection = collections.projects;
+
+SimpleSchema.extendOptions(['autoform']);
+
+
+Template.insertProject.helpers({
+    'projectCollection': () => {
+        return _collection;
+    }
+});
+
+Template.updateProject.helpers({
+    'projectCollection': () => {
+        return _collection;
+    },
+    'selectedDocument': () => {
+        //return getDocumentById(_collection, getSelectedDocumentId());
+        return _collection.findOne({_id: Session.get('selectedDocument')._id});
+    }
+});
+
+/*
+Template.detailsProject.helpers({
+    'selectedDocument': () => {
+        return getDocumentById(_collection, FlowRouter.getParam('_id'));
+        //return _collection.findOne({_id: FlowRouter.getParam('_id')});
+    },
+});
+
+Template.detailsProject.events({
+    'click .mod-project-modal': (e) => {
+        setInModalTemplate({
+            template: 'updateProject',
+            label: 'Update project'
+        });
+        setSelectedDocument(e.target.id);
+    },
+});
+*/
+
+Template.Projects.helpers({
+    'projectCollection': () => {
+        return loadDocuments(_collection);
+    },
+});
+
+Template.Projects.events({
+    'click .btn-remove': (e) => {
+        //_collection.remove({_id: e.target.id});
+        removeDocument(_collection, e.target.id);
+    },
+    'click .project-modal': (e) => {
+        setInModalTemplate({
+            template: 'insertProject',
+            label: 'Add new project'
+        });
+        resetSelectedDocument();
+    },
+    'click .mod-project-modal': (e) => {
+        setInModalTemplate({
+            template: 'updateProject',
+            label: 'Update project'
+        });
+        setSelectedDocument(e.target.id);
+    },
+    'click .details-project-modal': (e) => {
+        resetInModalTemplate();
+        setSelectedDocument(e.target.id);
+    }
+});
+
+
+
+
+/******************************************************************************************************* */
+/*
+import { collections } from '../../../datastructure/datastructure.js';
 import { Template } from 'meteor/templating';
 import SimpleSchema from 'simpl-schema';
 import '../../modal/modal.js';
@@ -56,21 +135,6 @@ Template.projects.events({
     }
 });
 
-/*
-TabularTables = {};
-Template.registerHelper('TabularTables', TabularTables);
-TabularTables.Projects = new Tabular.Table({
-    name: 'Projects',
-    collection: collections.projects,
-    columns: [
-        {data: 'project', title: 'Name'},
-        {data: 'projectId', title: 'Id'},
-        {data: 'projectCode', title: 'Code'},
-        {data: 'info.startDate', title: 'info.startDate'},
-        {data: 'info.endDate', title: 'info.endDate'},
-        {data: 'info.timeLife', title: 'info.timeLife'},
-        {data: 'description', title: 'description'},
-    ]
-});
-*/
 
+
+*/

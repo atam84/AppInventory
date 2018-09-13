@@ -12,9 +12,10 @@ export const env = new SimpleSchema({
 		label: "Name",
 		max: 50,
 		custom() {
+			/*
 			console.dir(this.field('name'));
 			console.dir(this.field('short_name'));
-	
+			*/
 			if(!this.field('name').value && !this.value) {
 				return 'required';
 			}
