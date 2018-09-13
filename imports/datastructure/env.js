@@ -25,13 +25,14 @@ export const env = new SimpleSchema({
 				if (targetCheck.lenght > 0) {
 					if (this.isInsert) {
 						return 'errDuplicate';
-					}
-					if (this.isUpdate) {
+					} else if (this.isUpdate) {
 						if (targetCheck.lenght == 1) {
 							return undefined;
 						} else {
 							return 'errDuplicate';
 						}
+					} else {
+						return undefined;
 					}
 				} else {
 					return undefined;
