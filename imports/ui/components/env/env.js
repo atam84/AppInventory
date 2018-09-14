@@ -12,17 +12,16 @@ SimpleSchema.extendOptions(['autoform']);
 
 
 Template.insertEnv.helpers({
-    'envCollection': () => {
+    'getMongoObject': () => {
         return _collection;
     }
 });
 
 Template.updateEnv.helpers({
-    'envCollection': () => {
+    'getMongoObject': () => {
         return _collection;
     },
     'selectedDocument': () => {
-        //return getDocumentById(_collection, getSelectedDocumentId());
         return _collection.findOne({_id: Session.get('selectedDocument')._id});
     }
 });
@@ -30,12 +29,14 @@ Template.updateEnv.helpers({
 Template.detailsEnv.helpers({
     'selectedDocument': () => {
         return getDocumentById(_collection, FlowRouter.getParam('_id'));
-        //return _collection.findOne({_id: FlowRouter.getParam('_id')});
     },
+    'modalLabel': () => {
+        return "Environnement";
+    }
 });
 
 Template.detailsEnv.events({
-    'click .mod-env-modal': (e) => {
+    'click .mod-item': (e) => {
         setInModalTemplate({
             template: 'updateEnv',
             label: 'Update environnement'
@@ -44,25 +45,27 @@ Template.detailsEnv.events({
     },
 });
 
-Template.Envs.helpers({
-    'envCollection': () => {
+Template.envs.helpers({
+    'loadCollection': () => {
         return loadDocuments(_collection);
     },
+    'rootPath': () => {
+        return "/env/detail/";
+    }
 });
 
-Template.Envs.events({
+Template.envs.events({
     'click .btn-remove': (e) => {
-        //_collection.remove({_id: e.target.id});
         removeDocument(_collection, e.target.id);
     },
-    'click .env-modal': (e) => {
+    'click .add-new-item': (e) => {
         setInModalTemplate({
             template: 'insertEnv',
             label: 'Add new environnement'
         });
         resetSelectedDocument();
     },
-    'click .mod-env-modal': (e) => {
+    'click .mod-item': (e) => {
         setInModalTemplate({
             template: 'updateEnv',
             label: 'Update environnement'

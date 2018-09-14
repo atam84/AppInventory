@@ -1,57 +1,80 @@
-//import { Tracker } from 'meteor/tracker';
-//import { Mongo } from 'meteor/mongo';
-import { Tabular } from "meteor/aldeed:tabular";
-import { $ } from 'meteor/jquery';
 import { collections } from '../../../datastructure/datastructure.js';
-import { ReactiveVar } from 'meteor/reactive-var';
 import { Template } from 'meteor/templating';
 import SimpleSchema from 'simpl-schema';
 import '../../modal/modal.js';
 import './job.html';
+import { setInModalTemplate, loadDocuments, removeDocument, resetSelectedDocument, resetInModalTemplate, setSelectedDocument, getDocumentById } from '../../../api/client/actions.js';
+
 
 let _collection = collections.jobs;
-
 
 SimpleSchema.extendOptions(['autoform']);
 
 
 Template.insertJob.helpers({
-    'jobCollection': () => {
+    'getMongoObject': () => {
         return _collection;
     }
 });
 
 Template.updateJob.helpers({
-    'jobCollection': () => {
+    'getMongoObject': () => {
         return _collection;
     },
-    'selectedJob': () => {
-        return _collection.findOne({_id: session.get('selectedJob')});
+    'selectedDocument': () => {
+        return _collection.findOne({_id: Session.get('selectedDocument')._id});
     }
 });
 
+Template.detailsJob.helpers({
+    'selectedDocument': () => {
+        return getDocumentById(_collection, FlowRouter.getParam('_id'));
+    },
+    'modalLabel': () => {
+        return "Job";
+    }
+});
+
+Template.detailsJob.events({
+    'click .mod-item': (e) => {
+        setInModalTemplate({
+            template: 'updateJob',
+            label: 'Update job'
+        });
+        setSelectedDocument(e.target.id);
+    },
+});
 
 Template.jobs.helpers({
-    'jobCollection': () => {
-        console.log('jobCollection called');
-        _res = _collection.find({}).fetch();
-        console.dir(_res);
-        return _res;
+    'loadCollection': () => {
+        return loadDocuments(_collection);
     },
+    'rootPath': () => {
+        return "/job/detail/";
+    }
 });
 
 Template.jobs.events({
     'click .btn-remove': (e) => {
-        console.log(e.target.id);
-        _collection.remove({_id: e.target.id});
+        removeDocument(_collection, e.target.id);
     },
-    'click .job-modal': (e) => {
-        Session.set('inModalTemplete', {
+    'click .add-new-item': (e) => {
+        setInModalTemplate({
             template: 'insertJob',
             label: 'Add new job'
         });
-        console.log(e.target);
+        resetSelectedDocument();
+    },
+    'click .mod-item': (e) => {
+        setInModalTemplate({
+            template: 'updateJob',
+            label: 'Update job'
+        });
+        setSelectedDocument(e.target.id);
+    },
+    'click .details-env-modal': (e) => {
+        resetInModalTemplate();
+        setSelectedDocument(e.target.id);
     }
 });
-
 

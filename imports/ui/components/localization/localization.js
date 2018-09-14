@@ -1,57 +1,80 @@
-//import { Tracker } from 'meteor/tracker';
-//import { Mongo } from 'meteor/mongo';
-import { Tabular } from "meteor/aldeed:tabular";
-import { $ } from 'meteor/jquery';
 import { collections } from '../../../datastructure/datastructure.js';
-import { ReactiveVar } from 'meteor/reactive-var';
 import { Template } from 'meteor/templating';
 import SimpleSchema from 'simpl-schema';
 import '../../modal/modal.js';
-import './job.html';
+import './localization.html';
+import { setInModalTemplate, loadDocuments, removeDocument, resetSelectedDocument, resetInModalTemplate, setSelectedDocument, getDocumentById } from '../../../api/client/actions.js';
 
-let _collection = collections.jobs;
 
+let _collection = collections.localizations;
 
 SimpleSchema.extendOptions(['autoform']);
 
 
-Template.insertJob.helpers({
-    'jobCollection': () => {
+Template.insertLocalization.helpers({
+    'getMongoObject': () => {
         return _collection;
     }
 });
 
-Template.updateJob.helpers({
-    'jobCollection': () => {
+Template.updateLocalization.helpers({
+    'getMongoObject': () => {
         return _collection;
     },
-    'selectedJob': () => {
-        return _collection.findOne({_id: session.get('selectedJob')});
+    'selectedDocument': () => {
+        return _collection.findOne({_id: Session.get('selectedDocument')._id});
     }
 });
 
-
-Template.jobs.helpers({
-    'jobCollection': () => {
-        console.log('jobCollection called');
-        _res = _collection.find({}).fetch();
-        console.dir(_res);
-        return _res;
+Template.detailsLocalization.helpers({
+    'selectedDocument': () => {
+        return getDocumentById(_collection, FlowRouter.getParam('_id'));
     },
+    'modalLabel': () => {
+        return "Localization";
+    }
 });
 
-Template.jobs.events({
-    'click .btn-remove': (e) => {
-        console.log(e.target.id);
-        _collection.remove({_id: e.target.id});
-    },
-    'click .job-modal': (e) => {
-        Session.set('inModalTemplete', {
-            template: 'insertJob',
-            label: 'Add new job'
+Template.detailsLocalization.events({
+    'click .mod-item': (e) => {
+        setInModalTemplate({
+            template: 'updateLocalization',
+            label: 'Update localization'
         });
-        console.log(e.target);
+        setSelectedDocument(e.target.id);
+    },
+});
+
+Template.localizations.helpers({
+    'loadCollection': () => {
+        return loadDocuments(_collection);
+    },
+    'rootPath': () => {
+        return "/localization/detail/";
     }
 });
 
+Template.localizations.events({
+    'click .btn-remove': (e) => {
+        removeDocument(_collection, e.target.id);
+    },
+    'click .add-new-item': (e) => {
+        setInModalTemplate({
+            template: 'insertLocalization',
+            label: 'Add new localization'
+        });
+        resetSelectedDocument();
+    },
+    'click .mod-item': (e) => {
+        setInModalTemplate({
+            template: 'updateLocalization',
+            label: 'Update localization'
+        });
+        setSelectedDocument(e.target.id);
+    },
+    'click .details-env-modal': (e) => {
+        resetInModalTemplate();
+        setSelectedDocument(e.target.id);
+    }
+});
 
