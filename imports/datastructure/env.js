@@ -12,14 +12,9 @@ export const env = new SimpleSchema({
 		label: "Name",
 		max: 50,
 		custom() {
-			/*
-			console.dir(this.field('name'));
-			console.dir(this.field('short_name'));
-			*/
 			if(!this.field('name').value && !this.value) {
 				return 'required';
 			}
-			// verification server side
 			if(Meteor.isServer) {
 				let targetCheck = collections.envs.find({name: this.field('name').value}).fetch();
 				if (targetCheck.lenght > 0) {
@@ -40,12 +35,12 @@ export const env = new SimpleSchema({
 			}
 		}
 	},
-	short_name: {
+	shortForm: {
 		type: String,
 		label: "Short name",
 		max: 5,
 	},
-	set_color: {
+	setColor: {
 		type: String,
 		label: "Define background color",
 		required: false,

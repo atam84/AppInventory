@@ -1,80 +1,106 @@
 <template name='jobs'>
-        <div>
-        {{> inModal label="@create job" class="btn-primary btn-sm job-modal"}}
-        {{> inModal label="@create job" isLink="true" class="alert-link job-modal"}}
-        </div>
-        <table class="table table-bordered table-hover table-sm">
-            <thead>
-                <tr>
-                    <th>Business</th>
-                    <th>Short Business</th>
-                    <th class="text-center">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each item in jobCollection}}
-                <tr id="{{item._id}}">
-                    <td><a href="/envs/{{item._id}}">{{job_title}}</a></td>
-                    <td>{{item.short_job_title}}</td>
-                    <td class="text-center">
-                        <a class='btn btn-info btn-sm' href="#">
-                        <span class="glyphicon glyphicon-edit"></span> Edit</a> 
-                        <a href="#" class="btn btn-danger btn-sm btn-remove" id={{item._id}}><span class="glyphicon glyphicon-remove"></span> Del</a>
-                        <a class="btn btn-primary btn-sm" data-toggle="collapse" href="#job{{item._id}}" role="button" aria-expanded="false" aria-controls="{{item._id}}">
-                            details</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="4" class="collapse" id="job{{item._id}}">
-                        <div>
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-                        </div>
-                    </td>
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
-    </template>
-    
-    
-    
-<template name='insertJob'>
-    {{#autoForm collection=jobCollection id="insertJob" type="insert"}}
-    <div class="modal-body">
-        <fieldset>
-            <div class="container">
-                <div class="row">
-                    <div class="col">
-                        {{> afQuickField name='job_title' autofocus=''}}
-                    </div>
-                    <div class="col">
-                        {{> afQuickField name='short_job_title'}}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        {{> afQuickField name='comment' rows=3}}
-                    </div>
-                </div>
-            </div>
-        </fieldset>
+    <div class="button-band">
+    <button type="button" class="btn btn-primary btn-sm add-new-item openInModal" data-toggle="modal" data-target="#inModal">Create</button>
+    {{> inModal}}
     </div>
-    <div class="modal-footer">
-        <button type="reset" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <table class="table table-bordered table-hover table-sm">
+        <thead>
+            <tr>
+                <th>Job title</th>
+                <th>Short form</th>
+                <th class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each item in loadCollection}}
+            <tr id="{{item._id}}">
+                <td><a href="{{rootPath}}{{item._id}}">{{item.jobTitle}}</a></td>
+                <td>{{item.shortForm}}</td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-primary btn-sm mod-item openInModal" data-toggle="modal" data-target="#inModal" id="{{item._id}}">Edit</button>
+                    <a class="btn btn-primary btn-sm" href="{{rootPath}}{{item._id}}" role="button" id="{{item._id}}">Details</a>
+                    <a href="#" class="btn btn-danger btn-sm btn-remove" id={{item._id}}><span class="glyphicon glyphicon-remove"></span>Del</a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</template>
+
+
+<template name='insertJob'>
+    {{#autoForm collection=getMongoObject id='insertJob' type='insert'}}
+    <div class="row">
+        <div class="col">
+            {{> afQuickField name='jobTitle' autofocus=''}}
+        </div>
+        <div class="col">
+            {{> afQuickField name='shortForm'}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            {{> afQuickField name='comment' rows=3}}
+        </div>
+    </div>
+    <div class="modal-footer modal-footer-adapter">
+        <button type="reset" class="btn btn-secondary close-modal" data-dismiss="modal">Close</button>
         <button type="submit" class="btn btn-success">Create</button>
     </div>
     {{/autoForm}}
 </template>
 
+<template name="updateJob">
+    {{#autoForm collection=getMongoObject doc=selectedDocument id='updateJob' type='update'}}
+    <div class="row">
+        <div class="col">
+            {{> afQuickField name='jobTitle' autofocus=''}}
+        </div>
+        <div class="col">
+            {{> afQuickField name='shortForm'}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            {{> afQuickField name='comment' rows=3}}
+        </div>
+    </div>
+    <div class="modal-footer modal-footer-adapter">
+        <button type="reset" class="btn btn-secondary close-modal" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+    {{/autoForm}}
+</template>
 
-    <template name="updateJob">
-    
-    </template>
-    
-    <template name="detailsJob">
-        <fieldset>
-          <legend>env details</legend>
-        </fieldset>
-    </template>
-        
-        
+<template name="detailsJob">
+    {{#with selectedDocument}}
+    <div class="card">
+        <div class="card-header">
+            <h5>{{modalLabel}}</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <h5 class="card-title">Job: {{jobTitle}}</h5>
+                </div>
+                <div class="col">
+                    <h5>Short name: {{shortForm}}</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <h5>Comment: </h5>
+                    <div class="comment-feild" style="border-color: {{setColor}};">
+                        <pre style="font-size: 1rem;" class="pre-comment">{{comment}}</pre>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm mod-item openInModal" data-toggle="modal" data-target="#inModal" id="{{_id}}">Edit</button>
+            {{> inModal}}
+        </div>
+    </div>
+    {{/with}}
+    {{inModal}}
+</template>
+
+

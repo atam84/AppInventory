@@ -6,19 +6,27 @@ SimpleSchema.debug = true;
 SimpleSchema.extendOptions(['autoform']);
 
 export const job = new SimpleSchema({
-	job_title: {
+	jobTitle: {
 		type: String,
 		label: "Job name",
-		max: 50
+		max: 50,
+		required: true
 	},
-	short_job_title: {
+	shortForm: {
 		type: String,
 		label: "Short job name",
-		max: 8
+		max: 8,
+		required: true
 	},
 	comment: {
         type: String,
         label: "Comment",
-        max: 2048
-    }
+		max: 2048,
+		required: false
+	},
+	info: {
+		type: Object,
+		required: false,
+		blackbox: true
+	},
 }, { tracker: Tracker });
