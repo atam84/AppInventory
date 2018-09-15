@@ -6,34 +6,47 @@ SimpleSchema.debug = true;
 SimpleSchema.extendOptions(['autoform']);
 
 export const os = new SimpleSchema({
-	os_name: {
-        type: String,
-        label: "Type",
-        autoform : { 
+	osType: {
+		type: String,
+		label: "Type",
+		required: true,
+		autoform : { 
 			options: [
-				{label: "Unix", value: "Unix"}, 
-				{label: "Linux", value: "Linux"},
-				{label: "Windows", value: "Windows"}, 
-				{label: "Android", value: "Android"},
-				{label: "IOS", value: "IOS"}, 
-				{label: "MacOS", value: "MacOS"}, 
-				{label: "Other", value: "Other"}
+				{label: "Unix", value: "unix"}, 
+				{label: "Linux", value: "linux"},
+				{label: "Windows", value: "windows"}, 
+				{label: "Android", value: "android"},
+				{label: "IOS", value: "ios"}, 
+				{label: "MacOS", value: "macos"}, 
+				{label: "Other", value: "other"}
 			]
 		}
 	},
-	os_name: {
-        type: String,
-        label: "Os",
-        max: 50
-	},
-	version: {
+	osName: {
 		type: String,
-		label: "Version",
-		max: 50
+		label: "Os",
+		max: 50,
+		required: true
 	},
-	commet: {
-        type: String,
-        label: "Comment",
-        max: 2048
-    }
+	versions: {
+		type: Array,
+		required: false,
+		blackbox: true
+	},
+	'versions.$': {
+		type: String,
+		required: false,
+		blackbox: true
+	},
+	info: {
+		type: Object,
+		required: false,
+		blackbox: true
+	},
+	comment: {
+		type: String,
+		label: "Comment",
+		max: 2048,
+		required: false
+	}
 }, { tracker: Tracker });

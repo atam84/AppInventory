@@ -17,6 +17,7 @@ import '../imports/ui/components/project/project.js'
 import '../imports/ui/components/ressource/ressource.js'
 import '../imports/ui/components/job/job.js'
 import "../imports/ui/components/localization/localization.js"
+import "../imports/ui/components/os/os.js"
 import '../imports/ui/body/body.js'
 import '../lib/routes.js'
 import './main.scss'
