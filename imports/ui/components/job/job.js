@@ -1,12 +1,27 @@
 import { collections } from '../../../datastructure/datastructure.js';
 import { Template } from 'meteor/templating';
 import SimpleSchema from 'simpl-schema';
+import { loadDocuments, removeDocument, getDocumentById } from "../../../api/client/actions.js"
+import { setInModalTemplateActionAdd } from "../../../api/client/actions.js"
+import { setInModalTemplateActionMod  } from "../../../api/client/actions.js"
 import '../../modal/modal.js';
 import './job.html';
-import { setInModalTemplate, loadDocuments, removeDocument, resetSelectedDocument, resetInModalTemplate, setSelectedDocument, getDocumentById } from '../../../api/client/actions.js';
-
 
 let _collection = collections.jobs;
+let __Setup = {
+    update: {
+        template: "updateJob",
+        label: "Update job"
+    },
+    insert: {
+        template: "insertJob",
+        label: "Insert new job"
+    },
+    defaultLabel: "Job",
+    collectionName: "jobs",
+    rootPath: "/job/detail/",
+    target: ""
+}
 
 SimpleSchema.extendOptions(['autoform']);
 
@@ -31,17 +46,15 @@ Template.detailsJob.helpers({
         return getDocumentById(_collection, FlowRouter.getParam('_id'));
     },
     'modalLabel': () => {
-        return "Job";
+        return __Setup.defaultLabel;
     }
 });
 
+
 Template.detailsJob.events({
     'click .mod-item': (e) => {
-        setInModalTemplate({
-            template: 'updateJob',
-            label: 'Update job'
-        });
-        setSelectedDocument(e.target.id);
+        __Setup.target = e.target.id;
+        setInModalTemplateActionMod(__Setup);
     },
 });
 
@@ -50,7 +63,7 @@ Template.jobs.helpers({
         return loadDocuments(_collection);
     },
     'rootPath': () => {
-        return "/job/detail/";
+        return __Setup.rootPath;
     }
 });
 
@@ -59,22 +72,12 @@ Template.jobs.events({
         removeDocument(_collection, e.target.id);
     },
     'click .add-new-item': (e) => {
-        setInModalTemplate({
-            template: 'insertJob',
-            label: 'Add new job'
-        });
-        resetSelectedDocument();
+        __Setup.target = e.target.id;
+        setInModalTemplateActionAdd(__Setup);
     },
     'click .mod-item': (e) => {
-        setInModalTemplate({
-            template: 'updateJob',
-            label: 'Update job'
-        });
-        setSelectedDocument(e.target.id);
-    },
-    'click .details-env-modal': (e) => {
-        resetInModalTemplate();
-        setSelectedDocument(e.target.id);
+        __Setup.target = e.target.id;
+        setInModalTemplateActionMod(__Setup);
     }
 });
 
