@@ -1,8 +1,7 @@
-<template name='Projects'>
+<template name='projects'>
     <div class="button-band">
-        <button type="button" class="btn btn-primary btn-sm project-modal openInModal" data-toggle="modal" data-target="#inModal"> Create new</button>
-        {{> inModal label="@create project" class="btn-primary btn-sm project-modal"}}
-        {{> inModal label="@create project" isLink="true" class="alert-link project-modal"}}
+        <button type="button" class="btn btn-primary btn-sm add-new-item openInModal" data-toggle="modal" data-target="#inModal">Create</button>
+        {{> inModal}}
     </div>
     <table class="table table-bordered table-hover table-sm">
         <thead>
@@ -15,14 +14,14 @@
             </tr>
         </thead>
         <tbody>
-            {{#each item in projectCollection}}
+            {{#each item in loadCollection}}
             <tr id="{{item._id}}">
-                <td><a href="/project/details/{{item._id}}">{{item.project}}</a></td>
+                <td><a href="{{rootPath}}{{item._id}}">{{item.project}}</a></td>
                 <td>{{item.projectId}}</td>
                 <td>{{item.projectCode}}</td>
                 <td class="text-center">
-                    <button type="button" class="btn btn-primary btn-sm mod-project-modal openInModal" data-toggle="modal" data-target="#inModal" id="{{item._id}}">Edit Project</button>
-                    <a class="btn btn-primary btn-sm" href="/project/detail/{{item._id}}" role="button" id="{{item._id}}">details</a>
+                    <button type="button" class="btn btn-primary btn-sm mod-item openInModal" data-toggle="modal" data-target="#inModal" id="{{item._id}}">Edit</button>
+                    <a class="btn btn-primary btn-sm" href="{{rootPath}}{{item._id}}" role="button" id="{{item._id}}">Details</a>
                     <a href="#" class="btn btn-danger btn-sm btn-remove" id={{item._id}}><span class="glyphicon glyphicon-remove"></span>Del</a>
                 </td>
             </tr>
@@ -33,7 +32,7 @@
 
 
 <template name="updateProject">
-    {{#autoForm collection=projectCollection doc=selectedDocument id='updateProject' type='update'}}
+    {{#autoForm collection=getMongoObject doc=selectedDocument id='updateProject' type='update'}}
     <div class="row">
         <div class="col">
             {{> afQuickField name='project' autofocus=''}}
@@ -49,10 +48,10 @@
     </div>
     <div class="row">
         <div class="col">
-            {{> afQuickField name='info.startDate'}}
+            {{> afQuickField name='startDate'}}
         </div>
         <div class="col">
-            {{> afQuickField name='info.endDate'}}
+            {{> afQuickField name='endDate'}}
         </div>
     </div>
     <div class="row">
@@ -70,7 +69,7 @@
             {{> afQuickField name='comment' rows=4}}
         </div>
     </div>
-    <div class="modal-footer" style="padding: 1rem 0rem 0rem 0rem;">
+    <div class="modal-footer modal-footer-adapter">
         <button type="reset" class="btn btn-secondary close-modal" data-dismiss="modal">Cancel</button>
         <button type="submit" class="btn btn-success">Update</button>
     </div>
@@ -82,7 +81,7 @@
     {{#with selectedDocument}}
     <div class="card">
         <div class="card-header">
-            <h5>Project</h5>
+            <h5>{{modalLabel}}</h5>
         </div>
         <div class="card-body">
             <div class="row">
@@ -100,12 +99,12 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <h5 class="card-title">Start date: {{info.startDate}}</h5>
+                    <h5 class="card-title">Start date: {{startDate}}</h5>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-                    <h5>Target end: {{info.endDate}}</h5>
+                    <h5>Target end: {{endDate}}</h5>
                 </div>
             </div>
 
@@ -141,49 +140,8 @@
 
 
 
-<!-- template name='projects'>
-    <div class="button-band">
-    {{> inModal label="@create project" class="btn-primary btn-sm project-modal"}}
-    {{> inModal label="@create project" isLink="true" class="alert-link project-modal"}}
-    </div>
-    <button type="button" class="btn btn-primary btn-sm project-modal openInModal" data-toggle="modal" data-target="#inModal" data-whatever="@mdo">main open</button>
-    <table class="table table-bordered table-hover table-sm">
-        <thead>
-            <tr>
-                <th>Project</th>
-                <th>ID</th>
-                <th>Code</th>
-                <th class="text-center">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{#each item in projectCollection}}
-            <tr id="{{item._id}}">
-                <td><a href="/projects/{{item._id}}">{{item.project}}</a></td>
-                <td>{{item.projectId}}</td>
-                <td>{{item.projectCode}}</td>
-                <td class="text-center">
-                    <a class='btn btn-info btn-sm' href="#">
-                    <span class="glyphicon glyphicon-edit"></span> Edit</a> 
-                    <a href="#" class="btn btn-danger btn-sm btn-remove" id={{item._id}}><span class="glyphicon glyphicon-remove"></span> Del</a>
-                    <a class="btn btn-primary btn-sm" data-toggle="collapse" href="#prj{{item._id}}" role="button" aria-expanded="false" aria-controls="{{item._id}}">
-                        details</a>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="4" class="collapse" id="prj{{item._id}}">
-                    <div>
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-                    </div>
-                </td>
-            </tr>
-            {{/each}}
-        </tbody>
-    </table>
-</template -->
-
 <template name='insertProject'>
-    {{#autoForm collection=projectCollection id="insertProject" type="insert"}}
+    {{#autoForm collection=getMongoObject id="insertProject" type="insert"}}
     <div class="row">
         <div class="col">
             {{> afQuickField name='project' autofocus=''}}
@@ -199,10 +157,10 @@
     </div>
     <div class="row">
         <div class="col">
-            {{> afQuickField name='info.startDate'}}
+            {{> afQuickField name='startDate'}}
         </div>
         <div class="col">
-            {{> afQuickField name='info.endDate'}}
+            {{> afQuickField name='endDate'}}
         </div>
     </div>
     <div class="row">

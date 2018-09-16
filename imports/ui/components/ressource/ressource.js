@@ -1,59 +1,83 @@
-//import { Tracker } from 'meteor/tracker';
-//import { Mongo } from 'meteor/mongo';
-import { Tabular } from "meteor/aldeed:tabular";
-import { $ } from 'meteor/jquery';
 import { collections } from '../../../datastructure/datastructure.js';
-import { ReactiveVar } from 'meteor/reactive-var';
 import { Template } from 'meteor/templating';
 import SimpleSchema from 'simpl-schema';
+import { loadDocuments, removeDocument, getDocumentById } from "../../../api/client/actions.js"
+import { setInModalTemplateActionAdd } from "../../../api/client/actions.js"
+import { setInModalTemplateActionMod  } from "../../../api/client/actions.js"
 import '../../modal/modal.js';
 import './ressource.html';
 
 let _collection = collections.ressources;
-
-
-
+let __Setup = {
+    update: {
+        template: "updateRessource",
+        label: "Update ressource"
+    },
+    insert: {
+        template: "insertRessource",
+        label: "Insert new ressource"
+    },
+    defaultLabel: "Ressource",
+    collectionName: "ressources",
+    rootPath: "/ressource/detail/",
+    target: ""
+}
 
 SimpleSchema.extendOptions(['autoform']);
 
 
 Template.insertRessource.helpers({
-    'ressourceCollection': () => {
+    'getMongoObject': () => {
         return _collection;
     }
 });
 
 Template.updateRessource.helpers({
-    'ressourceCollection': () => {
+    'getMongoObject': () => {
         return _collection;
     },
-    'selectedRessource': () => {
-        return _collection.findOne({_id: session.get('selectedRessource')});
+    'selectedDocument': () => {
+        return _collection.findOne({_id: Session.get('selectedDocument')._id});
+    }
+});
+
+Template.detailsRessource.helpers({
+    'selectedDocument': () => {
+        return getDocumentById(_collection, FlowRouter.getParam('_id'));
+    },
+    'modalLabel': () => {
+        return __Setup.defaultLabel;
     }
 });
 
 
-Template.ressources.helpers({
-    'ressourceCollection': () => {
-        console.log('ressourceCollection called');
-        _res = _collection.find({}).fetch();
-        console.dir(_res);
-        return _res;
+Template.detailsRessource.events({
+    'click .mod-item': (e) => {
+        __Setup.target = e.target.id;
+        setInModalTemplateActionMod(__Setup);
     },
+});
+
+Template.ressources.helpers({
+    'loadCollection': () => {
+        return loadDocuments(_collection);
+    },
+    'rootPath': () => {
+        return __Setup.rootPath;
+    }
 });
 
 Template.ressources.events({
     'click .btn-remove': (e) => {
-        console.log(e.target.id);
-        _collection.remove({_id: e.target.id});
+        removeDocument(_collection, e.target.id);
     },
-    'click .ressource-modal': (e) => {
-        Session.set('inModalTemplete', {
-            template: 'insertRessource',
-            label: 'Add new ressource'
-        });
-        console.log(e.target);
+    'click .add-new-item': (e) => {
+        __Setup.target = e.target.id;
+        setInModalTemplateActionAdd(__Setup);
+    },
+    'click .mod-item': (e) => {
+        __Setup.target = e.target.id;
+        setInModalTemplateActionMod(__Setup);
     }
 });
-
 

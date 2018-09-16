@@ -1,12 +1,27 @@
 import { collections } from '../../../datastructure/datastructure.js';
 import { Template } from 'meteor/templating';
 import SimpleSchema from 'simpl-schema';
+import { loadDocuments, removeDocument, getDocumentById } from "../../../api/client/actions.js"
+import { setInModalTemplateActionAdd } from "../../../api/client/actions.js"
+import { setInModalTemplateActionMod  } from "../../../api/client/actions.js"
 import '../../modal/modal.js';
 import './os.html';
-import { setInModalTemplate, loadDocuments, removeDocument, resetSelectedDocument, resetInModalTemplate, setSelectedDocument, getDocumentById } from '../../../api/client/actions.js';
-
 
 let _collection = collections.os;
+let __Setup = {
+    update: {
+        template: "updateOs",
+        label: "Update os"
+    },
+    insert: {
+        template: "insertOs",
+        label: "Insert new os"
+    },
+    defaultLabel: "Operating system",
+    collectionName: "os",
+    rootPath: "/operating-system/detail/",
+    target: ""
+}
 
 SimpleSchema.extendOptions(['autoform']);
 
@@ -31,17 +46,15 @@ Template.detailsOs.helpers({
         return getDocumentById(_collection, FlowRouter.getParam('_id'));
     },
     'modalLabel': () => {
-        return "Operating system";
+        return __Setup.defaultLabel;
     }
 });
 
+
 Template.detailsOs.events({
     'click .mod-item': (e) => {
-        setInModalTemplate({
-            template: 'updateOs',
-            label: 'Update OS'
-        });
-        setSelectedDocument(e.target.id);
+        __Setup.target = e.target.id;
+        setInModalTemplateActionMod(__Setup);
     },
 });
 
@@ -50,7 +63,7 @@ Template.operatingSystems.helpers({
         return loadDocuments(_collection);
     },
     'rootPath': () => {
-        return "/operating-system/detail/";
+        return __Setup.rootPath;
     }
 });
 
@@ -59,18 +72,12 @@ Template.operatingSystems.events({
         removeDocument(_collection, e.target.id);
     },
     'click .add-new-item': (e) => {
-        setInModalTemplate({
-            template: 'insertOs',
-            label: 'Add new OS'
-        });
-        resetSelectedDocument();
+        __Setup.target = e.target.id;
+        setInModalTemplateActionAdd(__Setup);
     },
     'click .mod-item': (e) => {
-        setInModalTemplate({
-            template: 'updateOs',
-            label: 'Update OS'
-        });
-        setSelectedDocument(e.target.id);
+        __Setup.target = e.target.id;
+        setInModalTemplateActionMod(__Setup);
     }
 });
 

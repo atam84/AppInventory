@@ -30,16 +30,12 @@ export const project = new SimpleSchema({
         max: 255,
         required: true
 	},
-    info: {
-        type: Object,
-        required: false
-    },
-    'info.startDate' : {
+    startDate: {
         type: Date,
         label: 'Start date',
         required: false
     },
-    'info.endDate': {
+    endDate: {
         type: Date,
         label: 'End life',
         required: false
@@ -55,5 +51,10 @@ export const project = new SimpleSchema({
         label: 'Comment',
         max: 2048,
         required: false
-    }
+    },
+    info: {
+		type: Object,
+		required: false,
+		blackbox: true
+	},
 }, { tracker: Tracker });

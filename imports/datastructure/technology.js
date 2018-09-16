@@ -11,10 +11,25 @@ export const technology = new SimpleSchema({
 		label: "Name",
 		max: 50
 	},
-	short_name: {
+	shortForm: {
 		type: String,
 		label: "Short name",
 		max: 5
+	},
+	versions: {
+		type: Array,
+		required: false,
+		blackbox: true
+	},
+	'versions.$': {
+		type: String,
+		required: false,
+		blackbox: true
+	},
+	info: {
+		type: Object,
+		required: false,
+		blackbox: true
 	},
 	comment: {
 		type: String,
