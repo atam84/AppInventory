@@ -1,5 +1,7 @@
-import { Tracker } from 'meteor/tracker';
-import SimpleSchema from 'simpl-schema';
+import { Tracker } from "meteor/tracker"
+import SimpleSchema from "simpl-schema"
+import { _ } from 'underscore'
+//import { optionSelectRessources } from "../api/client/selectors"
 
 
 SimpleSchema.debug = true;
@@ -14,15 +16,17 @@ export const application = new SimpleSchema({
 	ressources:  {
 		type: String,
 		label: "Human ressources",
-		autoform: {
+		required: false
+		/*autoform: {
 			options: function() {
-				return [{label: "dev001", value: "dev001"}]
+				return optionSelectRessources();
 			}
-		}
+		}*/
 	},
 	responsible:  {
 		type: String,
 		label: "Responsibles",
+		required: false,
 		autoform: {
 			options: function() {
 				return [{label: "cp001", value: "cp001"}]
@@ -32,6 +36,7 @@ export const application = new SimpleSchema({
 	technologie:  {
 		type: String,
 		label: "Technologies",
+		required: false,
 		autoform: {
 			options: function() {
 				return [{label: "tech001", value: "tech001"}]
@@ -41,11 +46,7 @@ export const application = new SimpleSchema({
 	project: {
 		type: String,
 		label: "Project",
-		autoform: {
-			options: function() {
-				return [{label: "project001", value: "project001"}]
-			}
-		}
+		required: true
 	},
 	description: {
 		type: String,
@@ -57,6 +58,11 @@ export const application = new SimpleSchema({
 		label: "End of life",
 		max: 255,
 		optional: true
+	},
+	info: {
+		type: Object,
+		required: false,
+		blackbox: true
 	},
 	comment:  {
 		type: String,
