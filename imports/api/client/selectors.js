@@ -27,7 +27,6 @@ export const optionSelect = (_collection, _searchCriteria, _filter, _limitation=
 		_options.push({value: value, label: label});
 	});
 	return _options;
-
 }
 
 Template.registerHelper('optionSelectProjects', () => {
@@ -65,7 +64,7 @@ Template.registerHelper('optionSelectOsType', () => {
     return _options;
 });
 
-Template.registerHelper('optionSelectOsName', (_osType=undefine) => {
+Template.registerHelper('optionSelectOsName', (_osType) => {
     if (_osType === undefined) {
         _filter = {};
     } else {
@@ -75,12 +74,12 @@ Template.registerHelper('optionSelectOsName', (_osType=undefine) => {
     return _options;
 });
 
-Template.registerHelper('optionSelectOsVersion', (_osName=undefine) => {
+Template.registerHelper('optionSelectOsVersion', (_osName) => {
     if (_osName === undefined) {
         _filter = {};
     } else {
-        _filter = {osType: _osName};
+        _filter = {_osName: _osName};
     }
-    let _options = optionSelect(collections.os, _filter, {_id:1, version: 1});
+    let _options = optionSelect(collections.os, _filter, {_id:1, osName: 1});
     return _options;
 });

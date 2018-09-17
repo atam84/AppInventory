@@ -11,6 +11,7 @@ global.Popper = popper;*/
 
 //global_collections = collections;
 //import "../imports/ui/test/testautoform.js";
+import "../imports/ui/components/servers/servers.js"
 import "../imports/ui/components/technology/technology.js"
 import "../imports/ui/components/application/application.js"
 import "../imports/ui/components/env/env.js"
