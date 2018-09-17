@@ -9,107 +9,87 @@ export const server = new SimpleSchema({
 	name: {
 		type: String,
 		label: "Name",
-		max: 50
+		max: 50,
+		required: true
 	},
 	ip: {
 		type: String,
-		//regEx: SimpleSchema.RegEx.IP,
-		label: "IP"
+		regEx: SimpleSchema.RegEx.IP,
+		label: "IP",
+		required: true
 	},
 	hostname:  {
 		type: String,
 		label: "Hostname",
-		max: 50
+		max: 50,
+		required: true
 	},
 	//alias: Array[String],
 	type: {
 		type: String,
-		label: "Project",
+		label: "Type",
 		autoform: {
 			options: function() {
-				return [{label: "Virtual Machine", value: "vm"},
-						{label: "Physical Machine", value: "server"},
-						{label: "Container", value: "container"}
-				]
+				return 
 			}
 		}
 	},
 	os: {
 		type: String,
-		label: "Project",
-		autoform: {
-			options: function() {
-				return [{label: "os001", value: "os001"},
-						{label: "os002", value: "os002"},
-						{label: "os003", value: "os003"}
-				]
-			}
-		}
+		label: "Os",
+		required: true
+	},
+	osVersion: {
+		type: String,
+		label: "Os version",
+		required: true,
 	},
 	usage: {
-		type: String,
+		type: Array,
 		label: "Usage",
-		autoform: {
-			options: function() {
-				return [{label: "developpement", value: "dev"},
-						{label: "integration", value: "int"},
-						{label: "production", value: "prod"},
-						{label: "pre-production", value: "pprod"}
-				]
-			}
-		}
+		required: true
 	},
-	localisation: {
+	'usage.$': {
+		type: String
+	},
+	localization: {
 		type: String,
 		label: "Localisation",
-		autoform: {
-			options: function() {
-				return [{label: "ici", value: "ici"},
-						{label: "here", value: "here"}
-				]
-			}
-		}
+		required: false
 	},
 	responsible: {
 		type: String,
 		label: "Responsible",
-		autoform: {
-			options: function() {
-				return [{label: "ici", value: "ici"},
-						{label: "here", value: "here"}
-				]
-			}
-		}
+		required: false
 	},
 	ressources: {
-		type: String
-	},
-	"ressources.$.cpu": {
-		type: String,
-		label: "CPU",
-		max: 3
-	},
-	"ressources.$" : {
 		type: Object,
+		required: false
 	},
-	"ressources.$.core": {
-		type: String,
+	'ressources.cpu': {
+		type: Number,
+		label: "CPU",
+	},
+	'ressources.core': {
+		type: Number,
 		label: "Core",
-		max: 3
 	},
-	"ressources.$.memory:" : {
-		type: String,
-		label: "Memory",
-		max: 10
+	'ressources.memory' : {
+		type: Number,
+		label: "Memory (GB)",
 	},
-	"ressources.$.diskspace": {
-		type: String,
-		label: "Disks spaces",
-		max: 10
+	'ressources.diskspace': {
+		type: Number,
+		label: "Disks spaces (GB)",
 	},
-	commet: {
+	comment: {
 		type: String,
 		label: "Comment",
 		max: 255
+	},
+	info: {
+		type: Object,
+		required: false,
+		blackbox: true
 	}
 }, { tracker: Tracker });
